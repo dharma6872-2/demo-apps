@@ -31,7 +31,7 @@ st.caption("This a Caption.")
 # 07.
 import streamlit as st
 
-with open("./contents/README.md", "r") as f:
+with open("./contents/README.md", "r", encoding="utf-8") as f:
     markdown_text = f.read()
 st.markdown(markdown_text, unsafe_allow_html =True)
 
@@ -44,7 +44,7 @@ st.subheader("This a Subheader.")
 st.write("This is text.")
 st.caption("This a Caption.")
 
-with open("./contents/README.md", "r", encoding="UTF8") as f:
+with open("./contents/README.md", "r", encoding="utf-8") as f:
     markdown_text = f.read()
 st.markdown(markdown_text, unsafe_allow_html =True)
 
