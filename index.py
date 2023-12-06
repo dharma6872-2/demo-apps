@@ -160,6 +160,7 @@ st.write(slider_number)
 
 # 19.
 import streamlit as st
+import datetime
 import pandas as pd
 
 user_date = st.date_input("Select your Date",
@@ -172,6 +173,7 @@ st.write(user_date)
 
 # 20.
 import streamlit as st
+import datetime
 import pandas as pd
 
 user_time = st.time_input("Select your Time",
@@ -200,14 +202,6 @@ import pandas as pd
 options = ["Red", "Blue", "Yellow"]
 radio_selection = st.radio("Select Color", options)
 st.write(f"Color selected is {radio_selection}")
-
-# 24.
-import streamlit as st
-import pandas as pd
-
-options = ["Red", "Blue", "Yellow"]
-selectbox_selection = st.selectbox("Select Color", options)
-st.write(f"Color selected is {selectbox_selection}")
 
 # 25.
 import streamlit as st
@@ -438,6 +432,15 @@ for column in removal_columns:
     res = res.drop(column, axis=1)
 st.write(res)
 
+# 35.
+import streamlit as st
+
+uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
+for uploaded_file in uploaded_files:
+    bytes_data = uploaded_file.read()
+    st.write("filename:", uploaded_file.name)
+    st.write(bytes_data)
+
 # 34.
 import platform
 import streamlit as st
@@ -495,14 +498,7 @@ if uploaded_file is not None:
     plt.title(f"{column_to_plot} Data Distribution")
     st.pyplot(plt)
 
-# 35.
-import streamlit as st
 
-uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
-for uploaded_file in uploaded_files:
-    bytes_data = uploaded_file.read()
-    st.write("filename:", uploaded_file.name)
-    st.write(bytes_data)
 
 # 36.
 import streamlit as st
@@ -540,6 +536,11 @@ for feature in iris_data.columns[:-1]:
 
 # 특성 간 상관 관계 시각화
 st.subheader('특성 간 상관 관계')
+
+# Map 'species' column to numeric values
+species_mapping = {'setosa': 0, 'versicolor': 1, 'virginica': 2}
+iris_data['species'] = iris_data['species'].map(species_mapping)
+
 correlation_matrix = iris_data.corr()
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
 st.pyplot()
@@ -548,52 +549,3 @@ st.pyplot()
 st.subheader('품종별 특성 산점도')
 sns.pairplot(iris_data, hue='species', diag_kind='kde')
 st.pyplot()
-
-# 37.
-# 스트림릿 앱에서 Matplotlib의 그림(figure)을 스트림릿에 전달할 때 발생하는 PyplotGlobalUseWarning 경고를 방지하려면 아래와 같이 코드를 수정할 수 있습니다.
-import streamlit as st
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-# 아이리스 데이터셋 불러오기
-# 아이리스 데이터셋 불러오기
-@st.cache_data
-def load_data():
-# GitHub에서 아이리스 데이터 다운로드
-    url = "https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv"
-    iris_df = pd.read_csv(url)
-    return iris_df
-
-
-iris_data = load_data()
-
-# 스트림릿 앱 제목 설정
-st.title('아이리스 데이터 시각화')
-
-# 데이터프레임 출력
-st.subheader('아이리스 데이터셋')
-st.write(iris_data)
-
-# 품종별 특성 분포 시각화
-st.subheader('품종별 특성 분포')
-for feature in iris_data.columns[:-1]:
-    plt.figure(figsize=(8, 6))
-    sns.boxplot(x='species', y=feature, data=iris_data)
-    plt.title(f'{feature} Distribution')
-    plt.xlabel('species')
-    plt.ylabel(feature)
-    st.pyplot(plt)
-
-# 특성 간 상관 관계 시각화
-st.subheader('특성 간 상관 관계')
-correlation_matrix = iris_data.corr()
-sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
-ax = sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
-st.pyplot(plt)
-
-# 품종별 특성 산점도 시각화
-st.subheader('품종별 특성 산점도')
-sns.pairplot(iris_data, hue='species', diag_kind='kde')
-sns.pairplot(iris_data, hue='species', diag_kind='kde')
-st.pyplot(plt)
